@@ -1,31 +1,47 @@
 package com.example.class2
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
    lateinit var diceImage:ImageView
    lateinit var numberText: TextView
+   lateinit var nameText: EditText
+   lateinit var playerNameTxt:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         diceImage = findViewById(R.id.diceImg)
         numberText = findViewById(R.id.numberTxt)
-//      val rollButton: Button = findViewById(R.id.rollBtn)
+        nameText = findViewById(R.id.editPlayerNameET)
+        playerNameTxt = findViewById(R.id.playerName)
 
         val rollButton  = findViewById<Button>(R.id.rollBtn)
+        val updateBtn:Button = findViewById(R.id.updateButton)
+        updateBtn.setOnClickListener{updateName(it)} // it - instance of the button
         rollButton.setOnClickListener{rollDice()}
+    }
+
+    private fun updateName(view: View){
+        playerNameTxt.text = nameText.text
+
+        nameText.text.clear()
+        nameText.clearFocus()
+
+        val imn = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imn.hideSoftInputFromWindow(view.windowToken,0)
     }
 
     private fun rollDice(){
         val randomNum = (1..6).random()
-//        val numberText: TextView = findViewById(R.id.numberTxt)
+
         numberText.text = randomNum.toString()
-//        val diceImage : ImageView = findViewById(R.id.diceImg)
+
         val imgSrc = when (randomNum){
             1 -> R.drawable.dice_1
             2-> R.drawable.dice_2
